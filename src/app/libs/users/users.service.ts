@@ -9,27 +9,39 @@ import { Repository } from 'typeorm';
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
-    private users: Repository<UserEntity>,
+    private readonly users: Repository<UserEntity>,
   ) {}
-  create(createUserDto: CreateUserDto): UserEntity {
-    return this.users.create({
+  async create(createUserDto: CreateUserDto): Promise<UserEntity | null> {
+    const userExists = await this.users.findOne({
+      where: { email: createUserDto.email },
+    });
+    if (userExists) return null;
+    const user = this.users.create({
       name: createUserDto.name,
       surname: createUserDto.surname,
       password: createUserDto.password,
       email: createUserDto.email,
     });
+    return await this.users.save(user);
   }
 
-  findAll() {
+  findAll(): Promise<UserEntity[]> {
     return this.users.find();
   }
 
-  findOne(id: number) {
-    return this.users.findOne({ where: { id: id } });
+  async findOne(id: number) {
+    const user = await this.users.findOne({ where: { id: id } });
+    delete user.password;
+
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.users.update(id, updateUserDto);
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    await this.users.update(id, updateUserDto);
+    const user = await this.users.findOne({ where: { id: id } });
+    delete user.password;
+
+    return user;
   }
 
   remove(id: number) {

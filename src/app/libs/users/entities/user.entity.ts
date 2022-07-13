@@ -1,7 +1,14 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { RolesEnums } from 'src/app/common/enums/roles.enums';
 
-@Entity()
+@Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,6 +27,9 @@ export class UserEntity {
 
   @Column({ unique: true, nullable: true })
   phone?: string;
+
+  @Column({ enum: RolesEnums, default: RolesEnums.CLIENT })
+  role: RolesEnums;
 
   @BeforeInsert()
   @BeforeUpdate()
