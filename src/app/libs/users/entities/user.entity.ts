@@ -25,9 +25,6 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({ unique: true, nullable: true })
-  phone?: string;
-
   @Column({ enum: RolesEnums, default: RolesEnums.CLIENT })
   role: RolesEnums;
 

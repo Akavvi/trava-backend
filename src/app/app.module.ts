@@ -5,6 +5,7 @@ import { UsersModule } from './libs/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { RolesService } from './libs/roles/roles.service';
+import { AuthModule } from './libs/auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RolesService } from './libs/roles/roles.service';
       synchronize: process.env.PRODUCTION == 'true',
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesService],

@@ -4,6 +4,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { RolesEnums } from '../../common/enums/roles.enums';
 
 @Injectable()
 export class UsersService {
@@ -25,15 +27,17 @@ export class UsersService {
     return await this.users.save(user);
   }
 
+  @Roles(RolesEnums.ADMIN)
   findAll(): Promise<UserEntity[]> {
     return this.users.find();
   }
 
-  async findOne(id: number) {
-    const user = await this.users.findOne({ where: { id: id } });
-    delete user.password;
+  async findOneById(id: number) {
+    return await this.users.findOne({ where: { id: id } });
+  }
 
-    return user;
+  async findOneByEmail(email: string) {
+    return await this.users.findOne({ where: { email: email } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
