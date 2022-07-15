@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { RolesEnums } from '../../common/enums/roles.enums';
+import { RolesEnums } from 'src/app/common/enums/roles.enums';
 
 @Injectable()
 export class UsersService {
@@ -42,10 +42,7 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     await this.users.update(id, updateUserDto);
-    const user = await this.users.findOne({ where: { id: id } });
-    delete user.password;
-
-    return user;
+    return await this.users.findOne({ where: { id: id } });
   }
 
   remove(id: number) {
