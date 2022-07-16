@@ -1,14 +1,8 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CheckpointEntity } from '../../checkpoints/entities/checkpoint.entity';
 
-@Entity({ name: 'TripEntity' })
+@Entity({ name: 'trips' })
 export class TripEntity {
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -24,6 +18,9 @@ export class TripEntity {
   @Column()
   time: string;
 
-  @OneToMany(() => CheckpointEntity, CheckpointEntity => CheckpointEntity.trips)
+  @OneToMany(
+    () => CheckpointEntity,
+    (CheckpointEntity) => CheckpointEntity.trips,
+  )
   checkpoints: CheckpointEntity[];
 }

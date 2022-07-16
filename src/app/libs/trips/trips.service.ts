@@ -3,9 +3,10 @@ import { CreateTripDto } from './dto/create-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TripEntity } from './entities/trip.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { RolesEnums } from '../../common/enums/roles.enums';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { ITripSearchParams } from './interfaces/ITripSearchParams';
 
 @Injectable()
 export class TripsService {
@@ -13,6 +14,8 @@ export class TripsService {
     @InjectRepository(TripEntity)
     private readonly trips: Repository<TripEntity>,
   ) {}
+
+  @Roles(RolesEnums.ADMIN)
   async create(createTripDto: CreateTripDto): Promise<TripEntity | null> {
     const trip = this.trips.create({
       name: createTripDto.name,
@@ -23,9 +26,12 @@ export class TripsService {
     return await this.trips.save(trip);
   }
 
-  @Roles(RolesEnums.CLIENT)
-  findAll() {
-    return this.trips.find();
+  findAll(params: ITripSearchParams) {
+    return this.trips.find({
+      take: params.limit,
+      skip: params.offset,
+      where: { name: Like(params.name) },
+    });
   }
 
   async findOneById(id: number) {
