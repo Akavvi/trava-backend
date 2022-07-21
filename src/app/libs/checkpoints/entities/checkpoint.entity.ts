@@ -12,9 +12,9 @@ export class CheckpointEntity {
   @Column({ nullable: true, default: null })
   description?: string;
 
-  @Column()
-  image: string;
+  @Column({ nullable: true, default: null })
+  image?: string;
 
   @ManyToOne(() => TripEntity, (trip) => trip.checkpoints)
-  trips: TripEntity;
+  trip: TripEntity;
 }

@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 
 export class CreateCheckpointDto {
   @IsNotEmpty()
@@ -9,4 +15,8 @@ export class CreateCheckpointDto {
   @IsString()
   @IsOptional()
   readonly description: string;
+
+  @IsOptional()
+  @Matches(new RegExp(/\.(jpeg|jpg|gif|png)$/))
+  readonly imageUrl: string;
 }

@@ -11,7 +11,9 @@ export class TripEntity {
 
   @Column()
   description: string;
-
+  
+  @Column({ nullable: true, default: null })
+  image?: string;
   @Column()
   price: number;
 
