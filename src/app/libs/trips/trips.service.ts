@@ -3,10 +3,11 @@ import { CreateTripDto } from './dto/create-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TripEntity } from './entities/trip.entity';
-import { Like, Repository } from 'typeorm';
+import { Between, LessThan, Like, Repository } from 'typeorm';
 import { RolesEnums } from '../../common/enums/roles.enums';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { ITripSearchParams } from './interfaces/ITripSearchParams';
+import { ITripFilterParams } from './interfaces/ITripFilterParams';
 
 @Injectable()
 export class TripsService {
@@ -20,17 +21,19 @@ export class TripsService {
     const trip = this.trips.create({
       name: createTripDto.name,
       description: createTripDto.description,
+      country: createTripDto.country,
       price: createTripDto.price,
       time: createTripDto.time,
+      checkpoints: createTripDto.checkpoints,
     });
     return await this.trips.save(trip);
   }
 
-  findAll(params: ITripSearchParams) {
+  findAll({ limit = 0, offset = 0, name }: ITripSearchParams) {
     return this.trips.find({
-      take: params.limit,
-      skip: params.offset,
-      where: { name: Like(params.name) },
+      take: limit,
+      skip: offset,
+      where: { name: Like(name) },
     });
   }
 
@@ -39,7 +42,16 @@ export class TripsService {
   }
 
   async findOneByName(name: string) {
-    return await this.trips.findOne({ where: { name: name } });
+    return await this.trips.findOne({ where: { name: Like(name) } });
+  }
+
+  async filter({ country, minPrice = 1, maxPrice }: ITripFilterParams) {
+    return await this.trips.find({
+      where: {
+        price: Between(minPrice, maxPrice),
+        country: country,
+      },
+    });
   }
 
   async update(id: number, updateTripDto: UpdateTripDto) {

@@ -11,7 +11,10 @@ export class TripEntity {
 
   @Column()
   description: string;
-  
+
+  @Column()
+  country: string;
+
   @Column({ nullable: true, default: null })
   image?: string;
   @Column()
@@ -20,9 +23,6 @@ export class TripEntity {
   @Column()
   time: string;
 
-  @OneToMany(
-    () => CheckpointEntity,
-    (CheckpointEntity) => CheckpointEntity.trips,
-  )
+  @OneToMany(() => CheckpointEntity, (checkpoint) => checkpoint.trip)
   checkpoints: CheckpointEntity[];
 }

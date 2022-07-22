@@ -1,6 +1,8 @@
 import {
+  ArrayMinSize,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   Length,
@@ -21,6 +23,10 @@ export class CreateTripDto {
 
   @IsNotEmpty()
   @IsString()
+  readonly country: string;
+
+  @IsOptional()
+  @IsString()
   readonly image: string;
 
   @IsNotEmpty()
@@ -34,5 +40,6 @@ export class CreateTripDto {
 
   @ValidateNested()
   @Type(() => CreateCheckpointDto)
+  @ArrayMinSize(3)
   readonly checkpoints: CreateCheckpointDto[];
 }

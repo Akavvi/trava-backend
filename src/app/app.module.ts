@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './libs/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
+import { TripsModule } from './libs/trips/trips.module';
+import { CheckpointsModule } from './libs/checkpoints/checkpoints.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { RolesGuard } from './common/guards/roles.guard';
     }),
     UsersModule,
     AuthModule,
+    TripsModule,
+    CheckpointsModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: RolesGuard }],
