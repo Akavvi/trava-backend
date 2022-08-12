@@ -4,6 +4,7 @@ import {
   IsString,
   Length,
   Matches,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateCheckpointDto {
@@ -18,5 +19,9 @@ export class CreateCheckpointDto {
 
   @IsOptional()
   @Matches(new RegExp(/\.(jpeg|jpg|gif|png)$/))
-  readonly imageUrl: string;
+  readonly imageUrl?: string;
+
+  @IsNumber()
+  @IsOptional()
+  readonly price?: number;
 }

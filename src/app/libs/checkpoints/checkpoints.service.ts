@@ -20,6 +20,7 @@ export class CheckpointsService {
       name: createCheckpointDto.name,
       description: createCheckpointDto.description,
       image: createCheckpointDto.imageUrl,
+      price: createCheckpointDto.price,
       trip: trip,
     });
   }

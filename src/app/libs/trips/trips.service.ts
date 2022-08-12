@@ -3,7 +3,7 @@ import { CreateTripDto } from './dto/create-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TripEntity } from './entities/trip.entity';
-import { Between, LessThan, Like, Repository } from 'typeorm';
+import { Between, Like, Repository } from 'typeorm';
 import { RolesEnums } from '../../common/enums/roles.enums';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { ITripSearchParams } from './interfaces/ITripSearchParams';

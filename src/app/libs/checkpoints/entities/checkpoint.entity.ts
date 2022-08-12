@@ -15,6 +15,9 @@ export class CheckpointEntity {
   @Column({ nullable: true, default: null })
   image?: string;
 
+  @Column({ nullable: true, default: null })
+  price: number;
+
   @ManyToOne(() => TripEntity, (trip) => trip.checkpoints)
   trip: TripEntity;
 }
